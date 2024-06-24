@@ -2,28 +2,22 @@ from pytube import YouTube
 from pydub import AudioSegment
 import os
 
-
 def download_youtube_video(url, download_path, as_mp3=False):
     try:
-        # Cria o objeto YouTube
         yt = YouTube(url)
 
-        # Seleciona a melhor stream de vídeo
         stream = yt.streams.get_highest_resolution()
 
-        # Baixa o vídeo
         print("Baixando o vídeo...")
         video_path = stream.download(download_path)
         print(f"Vídeo baixado com sucesso: {video_path}")
 
         if as_mp3:
-            # Converte o vídeo para MP3
             print("Convertendo vídeo para MP3...")
             audio_path = os.path.splitext(video_path)[0] + '.mp3'
             AudioSegment.from_file(video_path).export(audio_path, format='mp3')
             print(f"Áudio MP3 criado com sucesso: {audio_path}")
 
-            # Opcional: Exclui o arquivo de vídeo original
             os.remove(video_path)
             print("Arquivo de vídeo original excluído.")
 
@@ -35,7 +29,6 @@ def download_youtube_video(url, download_path, as_mp3=False):
         return None
 
 
-# Exemplo de uso
 url = input("Digite a URL do vídeo do YouTube: ")
 download_path = "./downloads"
 as_mp3 = input("Deseja baixar como MP3? (s/n): ").lower() == 's'
